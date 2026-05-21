@@ -1,3 +1,22 @@
+# Laboratorio 05 : Base de datos
+| Autores | Rol | Porcentaje |
+| :--- | :--- | :---: |
+| Richart Escobedo | Elaboración del modelo lógico DER | 100% |
+| Richart Escobedo | Implementación del modelo físico PostgreSQL | 100% |
+| Richart Escobedo | Implementación en Supabase | 100% |
+| Richart Escobedo | Elaboración del informe | 100% |
+| | **Total** | **100%** |
+
+| Entregables | URL |
+| :--- | :--- |
+| Repositorio | https://github.com/rescobedoq/enrollments.git |
+| Informe | https://github.com/rescobedoq/enrollments/blob/main/informes/DAW_lab05_bd.pdf |
+
+# Descripción de la práctica
+- Elaboración del modelo lógico DER.
+- Implementación del modelo físico PostgreSQL.
+- Implementación en Supabase - Backend como servicio disponible en la nube.
+- Elaborar README.md.
 ##  1. Modelo Lógico (Diagrama Entidad-Relación - DER)
 
 El siguiente diagrama representa de forma gráfica cómo se conectan las tablas de nuestra biblioteca.
