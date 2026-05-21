@@ -2,7 +2,7 @@
 
 El siguiente diagrama representa de forma gráfica cómo se conectan las tablas de nuestra biblioteca.
 
-![Diagrama Entidad Relación de la Biblioteca](./supabase/DiagramaDER.png)
+![Diagrama Entidad Relación de la Biblioteca](./supabase/modelo_DER.png)
 
 ---
 ### Creación de la Tablas:
