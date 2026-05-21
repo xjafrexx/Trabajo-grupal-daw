@@ -1,16 +1,13 @@
 # Laboratorio 05 : Base de datos
-| Autores | Rol | Porcentaje |
-| :--- | :--- | :---: |
-| Richart Escobedo | Elaboración del modelo lógico DER | 100% |
-| Richart Escobedo | Implementación del modelo físico PostgreSQL | 100% |
-| Richart Escobedo | Implementación en Supabase | 100% |
-| Richart Escobedo | Elaboración del informe | 100% |
-| | **Total** | **100%** |
+| Autores |
+| :--- | 
+| Jafet Macedo Orozco | 
+| Angel Paúl Apaza Nazareth | 
+| Eddy Alvaro Muto Montesinos | 
 
-| Entregables | URL |
-| :--- | :--- |
-| Repositorio | https://github.com/rescobedoq/enrollments.git |
-| Informe | https://github.com/rescobedoq/enrollments/blob/main/informes/DAW_lab05_bd.pdf |
+# Link video
+
+https://drive.google.com/file/d/13-MzyNVJm5CkZpvsxHaHo-ZEhnZp-VpI/view?usp=sharing
 
 # Descripción de la práctica
 - Elaboración del modelo lógico DER.
