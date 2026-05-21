@@ -10,82 +10,100 @@ El siguiente diagrama representa de forma gráfica cómo se conectan las tablas 
 Creamos la tabla `users` 
 
 ```sql
-create table users (
-    id uuid primary key default gen_random_uuid(),
-    "firstName" text not null,
-    "lastName" text not null,
-    email text unique not null,
+-- TABLA 1: users 
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    is_admin BOOLEAN DEFAULT false,
     
     -- Columnas obligatorias de auditoría
-    status boolean default true,
-    created timestamp with time zone default now(),
-    modified timestamp with time zone default now(),
-    created_id uuid, 
-    modified_id uuid
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID, 
+    modified_id UUID
 );
 
-Creamos la tabla `authors` 
-
-create table authors (
-    id uuid primary key default gen_random_uuid(),
-    "fullName" text not null,
-    nationality text,
+-- TABLA 2: authors
+CREATE TABLE authors (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    full_name TEXT NOT NULL,
+    nationality TEXT,
     
     -- Columnas obligatorias de auditoría
-    status boolean default true,
-    created timestamp with time zone default now(),
-    modified timestamp with time zone default now(),
-    created_id uuid references users(id),
-    modified_id uuid references users(id)
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID REFERENCES users(id),
+    modified_id UUID REFERENCES users(id)
 );
 
-Creamos la tabla `categories`
-
-create table categories (
-    id uuid primary key default gen_random_uuid(),
-    "categoryName" text not null,
-    description text,
+-- TABLA 3: categories 
+CREATE TABLE categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    category_name TEXT NOT NULL,
+    description TEXT,
     
     -- Columnas obligatorias de auditoría
-    status boolean default true,
-    created timestamp with time zone default now(),
-    modified timestamp with time zone default now(),
-    created_id uuid references users(id),
-    modified_id uuid references users(id)
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID REFERENCES users(id),
+    modified_id UUID REFERENCES users(id)
 );
 
-Creamos la tabla `books`
-
-create table books (
-    id uuid primary key default gen_random_uuid(),
-    title text not null,
-    "publishYear" integer,
+-- TABLA 4: books 
+CREATE TABLE books (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    publish_year INTEGER,
     
     -- Llaves foráneas (1 a muchos)
-    author_id uuid references authors(id) on delete restrict,
-    category_id uuid references categories(id) on delete restrict,
+    author_id UUID REFERENCES authors(id) ON DELETE RESTRICT,
+    category_id UUID REFERENCES categories(id) ON DELETE RESTRICT,
     
     -- Columnas obligatorias de auditoría
-    status boolean default true,
-    created timestamp with time zone default now(),
-    modified timestamp with time zone default now(),
-    created_id uuid references users(id),
-    modified_id uuid references users(id)
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID REFERENCES users(id),
+    modified_id UUID REFERENCES users(id)
 );
 
-Creamos la tabla `loans`
-
-create table loans (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid references users(id) on delete restrict,
-    book_id uuid references books(id) on delete restrict,
-    "loanDate" date not null default current_date,
-    "returnDate" date,
+-- TABLA 5: book_copies
+CREATE TABLE book_copies (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    book_id UUID NOT NULL REFERENCES books(id) ON DELETE RESTRICT, 
+    barcode TEXT UNIQUE NOT NULL,
+    physical_condition TEXT NOT NULL DEFAULT 'Bueno', -- Ejemplos: 'Bueno', 'Dañado', 'Desgastado'
+    is_available BOOLEAN NOT NULL DEFAULT true,
     
     -- Columnas obligatorias de auditoría
-    status boolean default true,
-    created timestamp with time zone default now(),
-    modified timestamp with time zone default now(),
-    created_id uuid references users(id),
-    modified_id uuid references users(id)
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID REFERENCES users(id),
+    modified_id UUID REFERENCES users(id)
 );
+
+-- TABLA 6: loans
+CREATE TABLE loans (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE RESTRICT,
+    book_copy_id UUID REFERENCES book_copies(id) ON DELETE RESTRICT, 
+    loan_date DATE NOT NULL DEFAULT current_date,
+    due_date DATE NOT NULL DEFAULT (current_date + INTERVAL '14 days'),
+    return_date DATE,
+    loan_status TEXT NOT NULL DEFAULT 'Activo', -- Ejemplos: 'Activo', 'Devuelto', 'Vencido'
+    notes TEXT,
+    
+    -- Columnas obligatorias de auditoría
+    status BOOLEAN DEFAULT true,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modified TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_id UUID REFERENCES users(id),
+    modified_id UUID REFERENCES users(id)
+);
+
