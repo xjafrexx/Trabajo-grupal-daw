@@ -24,7 +24,7 @@ El siguiente diagrama representa de forma gráfica cómo se conectan las tablas 
 ![Diagrama Entidad Relación de la Biblioteca](./supabase/modelo_DER.png)
 
 ---
-### Creación de la Tablas:
+## 2. Creación de la Tablas:
 
 Creamos la tabla `users` 
 
@@ -126,3 +126,15 @@ CREATE TABLE loans (
     modified_id UUID REFERENCES users(id)
 );
 
+```
+
+## 3. Infraestructura y Tecnología: Supabase
+
+Para el despliegue y gestión de la base de datos, el proyecto utiliza **Supabase**, una plataforma de desarrollo de código abierto que funciona como **Backend como servicio (BaaS)** disponible completamente en la nube. 
+
+* **Base de Datos Gestionada:** Al estar hospedado en la nube, PostgreSQL se ejecuta sin necesidad de configurar servidores locales, garantizando alta disponibilidad y respaldos automáticos.
+* **Autenticación Nativa (Supabase Auth):** Facilita la creación y control de accesos de los usuarios, conectándose de forma directa con nuestra lógica de permisos y la columna `is_admin` de la tabla `users`.
+* **API REST Automatizada:** Supabase genera instantáneamente una API segura a partir de nuestras tablas (`users`, `books`, `loans`, etc.), permitiendo que cualquier aplicación Frontend (web o móvil) pueda consultar o registrar datos de la biblioteca de inmediato.
+* **Consola de Administración Visual:** Permite al equipo monitorear el inventario de libros, verificar préstamos activos y auditar registros mediante una interfaz gráfica intuitiva (Table Editor) y un editor SQL centralizado.
+
+---
