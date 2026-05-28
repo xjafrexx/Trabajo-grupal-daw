@@ -1,3 +1,11 @@
+# Laboratorio 05 : Base de datos
+
+| Autores                     |
+|----------                   |
+| Jafet Macedo Orozco         |
+| Angel Paúl Apaza Nazareth   |
+| Eddy Alvaro Muto Montesinos |
+
 #  Sistema de Gestión de Biblioteca (sislib)
 
 Este proyecto corresponde al desarrollo del backend para el sistema de gestión de una biblioteca, implementado con **Django** como framework principal.
@@ -70,3 +78,9 @@ WebApps/applib/models/
 Las reglas críticas de negocio se validan antes de persistir los datos mediante funciones validadoras enlazadas directamente a las columnas.
 
 validate_publish_year: Impide que se guarden libros con un año de publicación superior al año en curso.
+
+```bash
+def validate_publish_year(value):
+    if value > timezone.now().year:
+        raise ValidationError('El año de publicación no puede ser en el futuro.')
+```
