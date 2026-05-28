@@ -1,10 +1,20 @@
-# Laboratorio 05 : Base de datos
+# Laboratorio 05 : Django admin
+| Autores |
+| :--- | 
+| Jafet Macedo Orozco | 
+| Angel Paúl Apaza Nazareth | 
+| Eddy Alvaro Muto Montesinos | 
 
-| Autores                     |
-|----------                   |
-| Jafet Macedo Orozco         |
-| Angel Paúl Apaza Nazareth   |
-| Eddy Alvaro Muto Montesinos |
+# Descripción de la práctica
+- Mostrar el modelo de datos resumido para su proyecto final. (Recomendación: 4-7 tablas)
+- Utilizar un entorno virtual para el proyecto de Python Django. (Crear y enviar requirements.txt)
+- Crear un proyecto Django y una aplicación con las siglas del proyecto. (Ejemplo: para un sistema académico podría llamarse **sisacad**)
+- Crear modelos en archivos independientes.
+- Redefinir el método **def save()** de los modelos para realizar operaciones previas de guardado de registro.
+- Redefinir el método **def __str__()** para seleccionar atributos específicos de los registros existentes.
+- Crear las funciones necesarias para aplicar restricciones desde el Modelo. (Ejemplo: **validators=[validate_even])**)
+- Capturar capturas de pantalla de los auto CRUDs generados por Django Admin. (Explique todo el proceso. Ejemplo: Crear profesor, crear curso, asignar curso a un profesor, ...)
+- Elaborar README.md.
 
 #  Sistema de Gestión de Biblioteca (sislib)
 
@@ -83,4 +93,16 @@ validate_publish_year: Impide que se guarden libros con un año de publicación 
 def validate_publish_year(value):
     if value > timezone.now().year:
         raise ValidationError('El año de publicación no puede ser en el futuro.')
+```
+# Creacion de Super Usuario
+```bash
+Username (leave blank to use 'lab6'): admin
+Email address: 
+Password: 1234
+Password (again): 1234 
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
 ```
