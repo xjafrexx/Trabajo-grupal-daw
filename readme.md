@@ -1,4 +1,4 @@
-# Laboratorio 05 : Django admin
+# Laboratorio 06 : Django admin
 | Autores |
 | :--- | 
 | Jafet Macedo Orozco | 
@@ -82,8 +82,8 @@ WebApps/applib/models/
 ├── loans.py
 └── users.py
 ```
-# Redefinir el método def save() de los modelos
-# Redefinir el método def str()
+# Redefinir el método def save() y str() de los modelos
+![Diagrama Entidad Relación de la Biblioteca](./imagen/save.png)
 # Crear las funciones necesarias para aplicar restricciones desde el Modelo (Validators)
 Las reglas críticas de negocio se validan antes de persistir los datos mediante funciones validadoras enlazadas directamente a las columnas.
 
