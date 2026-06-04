@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Libro - {{ libro.title }}</title>
+</head>
+<body>
+    <h1>Ficha del Libro</h1>
+    
+    <h2>{{ libro.title }}</h2>
+    
+    <p><strong>ID (UUID):</strong> {{ libro.id }}</p>
+    
+    <p><strong>Año de publicación:</strong> 
+        {% if libro.publishYear %}
+            {{ libro.publishYear }}
+        {% else %}
+            <i>No especificado</i>
+        {% endif %}
+    </p>
+
+    <p><strong>Estado:</strong> 
+        {% if libro.status %}
+            <span style="color: green; font-weight: bold;">Disponible</span>
+        {% else %}
+            <span style="color: red; font-weight: bold;">No disponible / Prestado</span>
+        {% endif %}
+    </p>
+
+    <p><small>Registrado el: {{ libro.created|date:"d/m/Y H:i" }}</small></p>
+
+    <hr>
+    <p><a href="{% url 'book-list' %}">Volver al catálogo de libros</a></p>
+    
+    <p>
+        <a href="{% url 'author-list' %}">Ir al catálogo de autores</a> | 
+        <a href="{% url 'user-list' %}">Ir a la lista de usuarios</a>
+    </p>
+</body>
+</html>

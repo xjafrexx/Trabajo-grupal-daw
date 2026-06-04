@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Lista de Autores</title>
+</head>
+<body>
+    <h1>Catálogo de Autores</h1>
+    
+    <ul>
+        {% for autor in autores %}
+            <li>
+                <a href="{% url 'author-detail' autor.id %}">
+                    {{ autor.fullName }}
+                </a> 
+                {% if autor.nationality %}
+                    <small>({{ autor.nationality }})</small>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No hay autores registrados en el sistema.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <p>
+        <a href="{% url 'book-list' %}">Ver Libros</a> | 
+        <a href="{% url 'user-list' %}">Ver Usuarios</a>
+    </p>
+</body>
+</html>

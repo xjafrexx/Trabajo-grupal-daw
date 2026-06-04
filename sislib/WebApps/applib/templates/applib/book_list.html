@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Catálogo de Libros</title>
+</head>
+<body>
+    <h1>Catálogo de Libros</h1>
+    
+    <ul>
+        {% for libro in libros %}
+            <li>
+                <a href="{% url 'book-detail' libro.id %}">
+                    {{ libro.title }}
+                </a>
+                {% if libro.publishYear %}
+                    <small>({{ libro.publishYear }})</small>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No hay libros registrados en el sistema. ¡Entra al panel de /admin/ para agregar el primero!</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <p>
+        <a href="{% url 'author-list' %}">Ver Autores</a> | 
+        <a href="{% url 'user-list' %}">Ver Usuarios</a>
+    </p>
+</body>
+</html>

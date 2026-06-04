@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuario - {{ usuario.firstName }} {{ usuario.lastName }}</title>
+</head>
+<body>
+    <h1>Ficha de Usuario</h1>
+    
+    <h2>{{ usuario.firstName }} {{ usuario.lastName }}</h2>
+    <p><strong>Correo electrónico:</strong> {{ usuario.email }}</p>
+    <p><strong>ID (UUID):</strong> {{ usuario.id }}</p>
+    <p><strong>Estado:</strong> {% if usuario.status %}Activo{% else %}Inactivo{% endif %}</p>
+    <p><strong>Creado por:</strong> 
+        {% if usuario.created_id %}
+            {{ usuario.created_id.lastName }}, {{ usuario.created_id.firstName }}
+        {% else %}
+            DESCONOCIDO
+        {% endif %}
+    </p>
+
+    {% if usuario.isAdmin %}
+        <hr>
+        <div style="background-color: #f4f6f9; padding: 15px; border-left: 5px solid #007bff;">
+            <h3 style="color: #007bff; margin-top: 0;">🛠️ Historial de Auditoría (Rol: Administrador)</h3>
+            
+            <h4>Libros registrados por este administrador:</h4>
+            <ul>
+                {% for libro in usuario.books_created.all %}
+                    <li>
+                        <a href="{% url 'book-detail' libro.id %}">{{ libro.title }}</a> 
+                        (Creado por: {% if libro.created_id %}{{ libro.created_id.lastName }}, {{ libro.created_id.firstName }}{% else %}DESCONOCIDO{% endif %})
+                    </li>
+                {% empty %}
+                    <li>Este administrador no ha registrado ningún libro todavía.</li>
+                {% endfor %}
+            </ul>
+
+            <h4>Autores registrados por este administrador:</h4>
+            <ul>
+                {% for autor in usuario.authors_created.all %}
+                    <li>
+                        <a href="{% url 'author-detail' autor.id %}">{{ autor.fullName }}</a> 
+                        (Creado por: {% if autor.created_id %}{{ autor.created_id.lastName }}, {{ autor.created_id.firstName }}{% else %}DESCONOCIDO{% endif %})
+                    </li>
+                {% empty %}
+                    <li>Este administrador no ha registrado ningún autor todavía.</li>
+                {% endfor %}
+            </ul>
+
+            <h4>Usuarios registrados por este administrador:</h4>
+            <ul>
+                {% for sub_usuario in usuario.users_created.all %}
+                    <li>
+                        <a href="{% url 'user-detail' sub_usuario.id %}">{{ sub_usuario.lastName }}, {{ sub_usuario.firstName }}</a> - {{ sub_usuario.email }}
+                    </li>
+                {% empty %}
+                    <li>Este administrador no ha registrado a otros usuarios todavía.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <hr>
+    <p><a href="{% url 'user-list' %}">Volver a la lista de usuarios</a></p>
+    <p>
+        <a href="{% url 'book-list' %}">Ir al catálogo de libros</a> | 
+        <a href="{% url 'author-list' %}">Ir al catálogo de autores</a>
+    </p>
+</body>
+</html>

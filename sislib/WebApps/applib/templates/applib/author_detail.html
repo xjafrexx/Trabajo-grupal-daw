@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Autor - {{ autor.fullName }}</title>
+</head>
+<body>
+    <h1>Ficha del Autor</h1>
+    
+    <h2>{{ autor.fullName }}</h2>
+    
+    <p><strong>ID (UUID):</strong> {{ autor.id }}</p>
+    
+    <p><strong>Nacionalidad:</strong> 
+        {% if autor.nationality %}
+            {{ autor.nationality }}
+        {% else %}
+            <i>No especificada</i>
+        {% endif %}
+    </p>
+
+    <p><strong>Estado en el sistema:</strong> 
+        {% if autor.status %}
+            <span style="color: green; font-weight: bold;">Activo</span>
+        {% else %}
+            <span style="color: red; font-weight: bold;">Inactivo</span>
+        {% endif %}
+    </p>
+
+    <p><small>Registrado el: {{ autor.created|date:"d/m/Y H:i" }}</small></p>
+
+    <hr>
+    <p><a href="{% url 'author-list' %}">Volver a la lista de autores</a></p>
+    
+    <p>
+        <a href="{% url 'book-list' %}">Ir al catálogo de libros</a> | 
+        <a href="{% url 'user-list' %}">Ir a la lista de usuarios</a>
+    </p>
+</body>
+</html>
