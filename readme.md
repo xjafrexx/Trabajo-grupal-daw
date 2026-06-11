@@ -1,5 +1,4 @@
-# Laboratorio 06 : Django admin
-| Autores |
+# Laboratorio 08 : Django REST Framework
 | :--- | 
 | Jafet Macedo Orozco | 
 | Angel Paúl Apaza Nazareth | 
@@ -11,98 +10,58 @@
 - Crear un proyecto Django y una aplicación con las siglas del proyecto. (Ejemplo: para un sistema académico podría llamarse **sisacad**)
 - Crear modelos en archivos independientes.
 - Redefinir el método **def save()** de los modelos para realizar operaciones previas de guardado de registro.
-- Redefinir el método **def __str__()** para seleccionar atributos específicos de los registros existentes.
-- Crear las funciones necesarias para aplicar restricciones desde el Modelo. (Ejemplo: **validators=[validate_even])**)
 - Capturar capturas de pantalla de los auto CRUDs generados por Django Admin. (Explique todo el proceso. Ejemplo: Crear profesor, crear curso, asignar curso a un profesor, ...)
 - Elaborar README.md.
-
 #  Sistema de Gestión de Biblioteca (sislib)
 
 Este proyecto corresponde al desarrollo del backend para el sistema de gestión de una biblioteca, implementado con **Django** como framework principal.
 
----
-
-# 1. Descripción del Modelo de Datos
-El sistema consta de 8 tablas principales que modelan el flujo completo de una biblioteca, organizadas alfabéticamente en el caso de las relaciones Muchos a Muchos (N:M). Todas las entidades incorporan campos de auditoría (status, created, modified, created_id, modified_id) y llaves primarias basadas en identificadores únicos globales (UUID).
-
-- users: Almacena los lectores y administradores (isAdmin) del sistema.
-
-- authors: Registro de escritores de los libros.
-
-- categories: Géneros literarios o clasificaciones disponibles.
-
-- books: Catálogo general de obras indexadas.
-
-- authors_books: Tabla relacional (N:M) ordenada alfabéticamente que vincula libros con coautores.
-
-- books_categories: Tabla relacional (N:M) ordenada alfabéticamente que clasifica libros en múltiples categorías.
-
-- book_copies: Inventario físico de ejemplares disponibles en estanterías, permitiendo rastrear su estado individual.
-
-- loans: Registra las transacciones de salida y retorno de ejemplares físicos por parte de los usuarios.
+# Sistema de Gestión de Biblioteca (sislib) - API REST 
 
 
-##  2. Entorno Virtual y Dependencias
+##  Requisitos e Instalación
 
-Para el aislamiento de las librerías del proyecto, se utilizó un entorno virtual de Python. Las dependencias requeridas se encuentran consolidadas en el archivo `requirements.txt`.
+### 1. Activar el Entorno Virtual
+Asegúrese de inicializar su entorno virtual antes de ejecutar los comandos del framework.
 
-### Instrucciones de despliegue:
+**En GNU/Linux:**
 ```bash
-# 1. Clonar el repositorio
-git clone <https://github.com/xjafrexx/Trabajo-grupal-daw.git
-cd Trabajo-grupal-daw/sislib
-
-# 2. Crear y activar el entorno virtual
-python3 -m venv myvenv
-source myvenv/bin/activate  
-
-# 3. Instalar dependencias necesarias
+source my_env/bin/activate
+```
+**En MS Windows:**
+```bash
+source my_env/bin/activate
+my_env\Scripts\activate.bat
+```
+### 2. Instalar dependencias
+Instale Django REST Framework y los componentes necesarios registrados en el archivo de requerimientos:
+```bash
 pip install -r requirements.txt
-
-# 4. Ejecutar migraciones e iniciar servidor
+```
+### 3. Aplicar Migraciones
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
+### 4. Desplegar el navegador
+```bash
 python manage.py runserver
 ```
-# Crear un proyecto Django y una aplicación con las siglas del proyecto
-Se estructuró el proyecto raíz bajo el nombre del sistema institucional sislib y la aplicación interna encargada de la lógica de negocio usando las siglas reglamentarias: applib.
+## Endpoints de la API REST
 
-# Estructura de Modelos Decoupled (Archivos Independientes)
-Siguiendo las mejores prácticas de modularidad, la aplicación applib no concentra su estructura en un único models.py. Se modularizó mediante un paquete de Python estructurado de la siguiente manera:
+| Método HTTP        | Endpoint               | Descripción                                                                                                                                |
+| ------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| GET / POST         | `/api/users`           | Listar usuarios / Registrar un nuevo usuario (Modo Plano).                                                                                 |
+| GET / PUT / DELETE | `/api/users/{id}`      | Detalle, actualización y eliminación de un usuario por UUID.                                                                               |
+| GET / POST         | `/api/authors`         | Listar autores / Registrar un nuevo autor.                                                                                                 |
+| GET / PUT / DELETE | `/api/authors/{id}`    | Detalle, actualización y eliminación de un autor.                                                                                          |
+| GET / POST         | `/api/categories`      | Listar categorías / Registrar una categoría literaria.                                                                                     |
+| GET / PUT / DELETE | `/api/categories/{id}` | Detalle, actualización y eliminación de una categoría.                                                                                     |
+| GET / POST         | `/api/books`           | Listar libros (Modo Plano) / Registrar un nuevo libro.                                                                                     |
+| GET                | `/api/books/{id}`      | Consulta Compleja (Detalle Anidado): muestra el libro con sus copias físicas asociadas.                                                    |
+| GET / POST         | `/api/book-copies`     | Listar copias de libros / Registrar una copia física.                                                                                      |
+| GET / POST         | `/api/loans`           | Listar préstamos activos / Registrar un nuevo préstamo.                                                                                    |
+| GET                | `/api/loans/{id}`      | Consulta Compleja (Detalle Anidado): devuelve el préstamo junto con la información detallada del usuario y la copia del libro involucrada. |
 
-```text
-WebApps/applib/models/
-├── __init__.py
-├── authors_books.py
-├── authors.py
-├── book_copies.py
-├── books_categories.py
-├── books.py
-├── categories.py
-├── loans.py
-└── users.py
-```
-# Redefinir el método def save() y str() de los modelos
-![Diagrama Entidad Relación de la Biblioteca](./imagen/save.png)
-# Crear las funciones necesarias para aplicar restricciones desde el Modelo (Validators)
-Las reglas críticas de negocio se validan antes de persistir los datos mediante funciones validadoras enlazadas directamente a las columnas.
 
-validate_publish_year: Impide que se guarden libros con un año de publicación superior al año en curso.
 
-```bash
-def validate_publish_year(value):
-    if value > timezone.now().year:
-        raise ValidationError('El año de publicación no puede ser en el futuro.')
-```
-# Creacion de Super Usuario
-```bash
-Username (leave blank to use 'lab6'): admin
-Email address: 
-Password: 1234
-Password (again): 1234 
-This password is too short. It must contain at least 8 characters.
-This password is too common.
-This password is entirely numeric.
-Bypass password validation and create user anyway? [y/N]: y
-Superuser created successfully.
-```
