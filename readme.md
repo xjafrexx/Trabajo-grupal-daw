@@ -1,4 +1,5 @@
 # Laboratorio 08 : Django REST Framework
+| Autores |
 | :--- | 
 | Jafet Macedo Orozco | 
 | Angel Paúl Apaza Nazareth | 
@@ -10,7 +11,8 @@
 
 Este proyecto corresponde al desarrollo del backend para el sistema de gestión de una biblioteca, implementado con **Django** como framework principal.
 
-
+## Modelo ERD
+![Creación de Autor en Postman](imagen/erd.png)
 ##  Requisitos e Instalación
 
 ### 1. Activar el Entorno Virtual
