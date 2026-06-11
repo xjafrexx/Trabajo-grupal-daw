@@ -15,7 +15,7 @@ class CategoryDetailSerializer(CategorySerializer):
         return [
             {
                 "id": rel.book.id,
-                "title": rel.book.title  # Modificar si el campo de tu modelo Book se llama diferente
+                "title": rel.book.title 
             }
             for rel in relaciones
         ]

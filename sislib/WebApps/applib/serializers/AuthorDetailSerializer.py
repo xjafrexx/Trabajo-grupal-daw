@@ -15,7 +15,7 @@ class AuthorDetailSerializer(AuthorSerializer):
         return [
             {
                 "id": rel.book.id, 
-                "title": rel.book.title  # Asumo que tu modelo Book tiene el campo 'title' o similar
+                "title": rel.book.title
             } 
             for rel in relaciones
         ]
