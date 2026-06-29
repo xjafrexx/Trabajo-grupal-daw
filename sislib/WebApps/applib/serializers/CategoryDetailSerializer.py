@@ -1,21 +1,27 @@
 from rest_framework import serializers
 from .CategorySerializer import CategorySerializer
-from ..models.books_categories import BookCategory
+from ..models.books import Book
+
+class CategoryBookRepresentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['id', 'title']
+
 
 class CategoryDetailSerializer(CategorySerializer):
-    libros = serializers.SerializerMethodField()
+    books = CategoryBookRepresentationSerializer(many=True, read_only=True)
 
     class Meta(CategorySerializer.Meta):
         fields = '__all__'
 
-    def get_libros(self, obj):
-        # Buscamos todas las relaciones activas de esta categoría con libros
-        relaciones = BookCategory.objects.filter(category=obj, status=True)
-        # Retornamos los datos principales de los libros asociados
-        return [
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['books'] = [
             {
-                "id": rel.book.id,
-                "title": rel.book.title 
+                "id": book.id,
+                "title": book.title 
             }
-            for rel in relaciones
+            for book in instance.books.filter(status=True)
         ]
+        
+        return representation
