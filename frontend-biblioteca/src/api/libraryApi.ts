@@ -14,7 +14,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     throw new Error(`Error en la petición: ${response.statusText}`);
   }
-  if (response.status === 24) return {} as T; // Manejo de No Content (Delete)
+  if (response.status === 204) return {} as T; // Manejo de No Content (Delete)
   return response.json();
 }
 
