@@ -9,3 +9,6 @@ myvenv/
 *.pyc
 *.pyo
 *.pyd
+
+#No se oculto por ser un proyecto universitario
+#.env
