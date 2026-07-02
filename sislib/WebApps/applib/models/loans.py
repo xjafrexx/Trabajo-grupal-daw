@@ -10,11 +10,16 @@ from .book_copies import BookCopy
 def get_default_due_date():
     return timezone.now().date() + timedelta(days=14)
 
+def get_current_date():
+    return timezone.now().date()
+
 class Loan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.RESTRICT, db_column='user_id')
     book_copy = models.ForeignKey(BookCopy, on_delete=models.RESTRICT, db_column='book_copy_id')
-    loanDate = models.DateField(db_column='loanDate', default=timezone.now)
+    
+    loanDate = models.DateField(db_column='loanDate', default=get_current_date)
+    
     dueDate = models.DateField(db_column='due_date', default=get_default_due_date)
     loanStatus = models.TextField(db_column='loan_status', default='Activo')
     notes = models.TextField(db_column='notes', null=True, blank=True)
@@ -34,6 +39,11 @@ class Loan(models.Model):
             raise ValidationError(_('La fecha de vencimiento no puede ser anterior a la fecha del préstamo.'))
         if self.returnDate and self.loanDate and self.returnDate < self.loanDate:
             raise ValidationError(_('La fecha de devolución no puede ser anterior a la fecha del préstamo.'))
+        
+        if not self.pk:
+            if not self.book_copy.is_available:
+                raise ValidationError(_('Esta copia de libro no está disponible para préstamo en este momento.'))
+                
         super(Loan, self).clean()
 
     def save(self, *args, **kwargs):
@@ -41,7 +51,8 @@ class Loan(models.Model):
         self.loanStatus = self.loanStatus.upper()
         if self.notes is not None:
             self.notes = self.notes.upper()
-        return super(Loan, self).save(*args, **kwargs)
+
+        super(Loan, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s %s %s" % (self.id, self.user, self.loanStatus)
