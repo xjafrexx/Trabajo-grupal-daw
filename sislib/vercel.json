@@ -1,0 +1,14 @@
+{
+    "builds" : [
+    {
+        "src": "sisalib/wsgi.py",
+        "use": "@vercel/python"
+    }
+    ],
+    "routes" : [
+    {
+        "src": "/(.*)",
+        "dest": "sisalib/wsgi.py"
+    }
+    ]
+}
